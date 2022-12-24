@@ -1,9 +1,12 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const { urlencoded } = require('body-parser')
 const MongoClient = require('mongodb').MongoClient
 require('dotenv').config()
 
+
+// database
 let db,
   uri = process.env.DB_STRING,
   dbName = 'sample_mflix',
@@ -26,6 +29,12 @@ async function main() {
 
 main().catch(console.error)
 
+// Middlewares
+app.set('view engine', 'ejs')
+app.use(express.static('public'))
+app.use(urlencoded({ extended: true }))
+app.use(express.json())
+app.use(cors())
 
 app.listen(process.env.PORT || PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
